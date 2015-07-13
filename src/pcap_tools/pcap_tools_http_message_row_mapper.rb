@@ -17,7 +17,7 @@ class PcapToolsHttpMessageRowMapper
     content_type_header = event.content_type
 
     if is_response?(event)
-      HttpResponse.new(source_name, destination_name, event.code, event['set-cookie'], event['location'], content_type_header, body)
+      HttpResponse.new(source_name, destination_name, event.code, event['set-cookie'], event['location'], content_type_header, event['request_path'], body)
     else
       HttpRequest.new(source_name, destination_name, event.method, event.path, body, event['cookie'], content_type_header)
     end
@@ -43,7 +43,7 @@ class PcapToolsHttpMessageRowMapper
   end
 
   def user_agent_from(event)
-    raw_user_agent = event['user-agent'].chop
+    raw_user_agent = event['user-agent'].chomp
     (raw_user_agent.match BROWSER_USER_AGENT_PATTERN) ? 'User' : raw_user_agent
   end
 

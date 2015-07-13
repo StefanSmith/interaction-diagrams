@@ -59,9 +59,10 @@ class Application
   def is_unwanted_message http_message
     if http_message.response?
       %w(304 404).include?(http_message.response_code) ||
-          (http_message.content_type_header && http_message.content_type_header.match(/css|javascript|image/))
+          (http_message.content_type_header && http_message.content_type_header.match(/css|javascript|image/)) ||
+          http_message.request_path.match(/\.(png|gif|ico|js|css|woff|svg)(\?[^.]+)?$/)
     else
-      http_message.path.match(/\.(png|gif|ico|js|css)(\?[^.]+)?$/)
+      http_message.path.match(/\.(png|gif|ico|js|css|woff|svg)(\?[^.]+)?$/)
     end
   end
 end
